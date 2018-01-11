@@ -1,0 +1,75 @@
+## PBS preamble
+## submit using qsub filename.pbs
+## will return a job id - ####.nyx
+## check job queue  with qstat -u ejbreen
+##		states are C: complete, Q: queued, R: running, H: held
+## check job status with checkjob -v ######(job id)
+## to delete a job run qdel ####(job id) 
+## jobs will output to their directory with 
+##		jobname.o######(job id) and jobname.e#####(job id)
+## to check output while file is running use qpeek
+## to check accounts, type mdiag -u ejbreen
+## to check an accounts info, type mdiag -a accountName_flux
+
+
+
+
+## the first block covers interaction
+## name of file
+#PBS -N PBS_test_1
+## email address to send info to
+#PBS -M ejbreen@umich.edu
+## what notifications to recieve: 'b' when program begins, 
+## 'a' when program aborts, 'e' when program ends, 'n' never
+#PBS -m bae	
+
+
+## the second block covers payment and routing
+
+## which flux accout to use
+#PBS -A example_flux
+## this should always be -l qos=flux
+#PBS -l qos=flux
+## defines which queue to use, will be the account suffix
+#PBS -q flux
+
+
+## the third block covers job characteristics
+
+## the machines (nodes), processors per maching(ppn), 
+## and memory per processor(ppn) that your project will need
+
+## this should be treated as the potential "worst case" max use
+## interpreted as max 2 nodes with 2 per node but may be 1 node with 4 processers
+## account memory alocation is processor allocation * 4
+
+## but your program may run on less resources if it can
+#PBS -l nodes=1:ppn=6,pmem=24gb
+## max runtime (dd:hh:mm:ss)
+#PBS -l walltime=1:15:00
+## joins the error stream to the output stream
+## useful for catching errors
+#PBS -j oe
+## sets the environment of all nodes to assigned to the job
+## to be the same environment as the one that the job was submitted from
+#PBS -V
+
+## to get gurobi installed add
+#PBS -l gres=guroi:N
+
+## End PBS preamble
+
+if [ -s "$PBS_NODEFILE" ] ; then
+    echo "Running on"
+    uniq -c $PBS_NODEFILE
+fi
+
+if [ -d "$PBS_O_WORKDIR" ] ; then
+    cd $PBS_O_WORKDIR
+    echo "Running from $PBS_O_WORKDIR"
+fi
+
+##  Put your job commands after this line
+
+## run the python file, replace filename
+python filename.py

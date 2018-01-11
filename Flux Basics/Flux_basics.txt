@@ -1,0 +1,65 @@
+to login
+	in order to use flux you need to be on campus or vpn in
+		flux requires a campus IP address
+	ssh -l ejbreen flux-login.arc-ts.umich.edu
+	
+modules
+	check whats available
+		module avail
+		module list
+	load modules
+		module load (modulename)
+			module load R/3.4.1
+			module load python-anaconda2/latest
+			moduel load gurobi/7.5.1
+	unload modules
+		module unload (modulename)
+			module unload R
+
+submitting jobs
+	qsub (filename).pbs
+		this will return a job id to you
+	
+check job status
+	qstat (jobid)
+	or
+	qstat -u ejbreen
+		R: running			
+		Q: waiting in queue		
+		C: completed
+		E: currently exiting
+		H: on hold
+	
+deleting a job
+	qdel (jobid)
+	
+Copying files to flux
+	when using linux
+		scp (localfile) ejbreen@flux-xfer.arc-ts.uimch.edu:remotefile
+			copies a file
+		scp -r (localdir) ejbreen@flux-xfer.arc-ts.umich.edu:remotedir
+			copies a directory (folder)
+	using windows
+		use the application WinSCP 
+		the server is flux-xfer.arc-ts.umich.edu
+	
+check your allocations
+	mdiag -u ejbreen
+	
+check the resources of a flux account
+	mdiag -a <accountname>
+		MAXPROC: 		total processors avaiable
+		MAXMEX:			total memory available to account
+		MAXPROC[USER]:	max processors a single user can use
+	
+	for engin_flux
+		evaluating acct information
+		Name         Priority        Flags         QDef	QOSList*        PartitionList Target  Limits
+
+		engin_flux          0            -         flux         flux        [flux][SHARED]   0.00  MAXJOB[USER]=-1,-1
+ 		MAXPROC=60 MAXPROC[USER]=20,20
+ 		MAXPS[USER]=13392000,13392000
+ 		MAXMEM=245760 MAXIJOB[USER]=20,20
+ 		MAXIPROC[USER]=-1,-1
+
+
