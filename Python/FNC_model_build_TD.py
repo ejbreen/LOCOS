@@ -19,7 +19,7 @@ import FNC
 def Build(C_pop, T_pop, matches, weights):
     
     #start the setup timer
-    setup_time = FNC.timerStart()
+    t_setup = FNC.timerStart()
     
     #set weights for covariates to their min
     weight_base, mean_T_pop,  dist = FNC.Pop_Calcuations(C_pop, T_pop) 
@@ -65,33 +65,33 @@ def Build(C_pop, T_pop, matches, weights):
     
     #define the constraints
     FNC.printMessage("Creating Gurobi Constraints")
-    c1_t = FNC.timerStart()
+    t_c1 = FNC.timerStart()
     m.addConstrs(matches <= quicksum(assign[t,c] for c in Ctrl) for t in Treat)
     FNC.printMessage("Constraint 1 done")
-    c1_t = FNC.timerStop(c1_t, 5)
+    t_c1 = FNC.timerStop(t_c1, 5)
     
-    c2_t = FNC.timerStart()
+    t_c2 = FNC.timerStart()
     m.addConstrs(1 >= quicksum(assign[t,c] for t in Treat) for c in Ctrl)
     FNC.printMessage("Constraint 2 done")
-    c2_t = FNC.timerStop(c2_t, 5)
+    t_c2 = FNC.timerStop(t_c2, 5)
 
-    c3_t = FNC.timerStart()
+    t_c3 = FNC.timerStart()
     m.addConstrs(z[i] >= quicksum((Ctrl_pop[c,i]*assign[t,c])/(matches*T_n) 
                 for t,c in distance) + T_avg[i] for i in Covar)    
     FNC.printMessage("Constraint 3 done")
-    c3_t = FNC.timerStop(c3_t, 5)
+    t_c3 = FNC.timerStop(t_c3, 5)
 
-    c4_t = FNC.timerStart()
+    t_c4 = FNC.timerStart()
     m.addConstrs(z[i] >= -quicksum((Ctrl_pop[c,i]*assign[t,c])/(matches*T_n) 
                 for t,c in distance) - T_avg[i] for i in Covar)    
     FNC.printMessage("Constraint 4 done")
-    c4_t = FNC.timerStop(c4_t, 5)
+    t_c4 = FNC.timerStop(t_c4, 5)
     
     m.update()
     
-    setup_time = FNC.timerStop(setup_time, 4)
+    t_setup = FNC.timerStop(t_setup, 4)
     
-    Timings = [setup_time, c1_t, c2_t, c3_t, c4_t]
+    Timings = [t_setup, t_c1, t_c2, t_c3, t_c4]
     Timings = pd.Series(Timings, index = ["Setup Time","C1","C2","C3","C4"])
     
     return m, assign, Timings
