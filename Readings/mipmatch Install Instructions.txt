@@ -1,0 +1,61 @@
+This file provides instructions for installing mipmatch and its dependecies, CPLEX and Rcplex, for MAC and Linux users.  These instructions borrow heavily from IBM's document "Quick Start to IBM ILOG Optimization products" available at http://download.boulder.ibm.com/ibmdl/pub/software/dw/university/support/ILOGQuickStart.pdf, and from the "INSTALL" file of the R package Rcplex, which is available at http://cran.r-project.org/web/packages/Rcplex/index.html.  If you are a Windows user, you are referred to these documents for installing the dependecies.  
+
+These instructions assume that you have a basic knowledge of Linux.  Before starting, note that the step of the installation that usually generates problems is getting Rcplex call correctly CPLEX, so if you don't know much Linux, going over these instructions with a person that knows more might save you time.  Also note that you need to have Xcode (Xcode 3 would suffice) installed in your MAC.
+
+The installation of mipmatch consists of three parts:
+1.	installing CPLEX;
+2.	installing Rcplex;
+3.	installing mipmatch.
+Instructions follow.
+
+1.	Steps fo installing CPLEX
+	As explained in IBM's document "Quick Start to IBM ILOG Optimization products", to install CPLEX the user first has to get CPLEX, and then get and install the license key.  
+	1.1.	Getting CPLEX
+		1.1.1.	Go to: https://www.ibm.com/developerworks/university/academicinitiative/
+		1.1.2.	Below "Software & system access," click on "Get software & access"
+		1.1.3.	Click on "Download from the Software Catalog"
+		1.1.4.	Log in 
+				(If you don't have an IBM ID, click on "Get an IBM ID" and register; apply for an Academic Initiative membership)
+		1.1.5.	Under "Find by search text" search for "CPLEX"
+				(Alternatively, on the upper left menu, click on "Search for software")
+		1.1.6.	For Mac download: IBM ILOG CPLEX Optimization Studio Academic Research Edition V12.3 for Mac OS X Multilingual (CI1ZEML)
+		1.1.7.	Launch the installer and follow the instructions
+				(With Firefox's default options you might have problems launching the installer, so you might want to use Safari instead)
+		1.1.8.	After the installer stops downloading CPLEX, change the permission of the file you downloaded to be executable, and then run in the terminal 
+				For this, in the terminal type "chmod +x file.bin" (e.g. "chmod +x cplex_studio123.acad.macos.bin")
+				Then, to run .bin file (and start the installation process), type "./file.bin" (e.g. "./cplex_studio123.acad.macos.bin")
+		1.1.9.	Follow the instructions to install
+	1.2.	Getting and installing the license key
+		1.2.1.	Go to: https://www14.software.ibm.com/webapp/iwm/web/preLogin.do?lang=en_US&source=ai-ILOGKEY
+		1.2.2.	Download the license key access.ilm
+		1.2.3.	Use the terminal to create the directory /usr/ilog/ilm/
+				For this, in the terminal type "sudo mkdir -p /usr/ilog/ilm/"  
+		1.2.4.	In this directory save the license key 
+				For this, in the terminal go to directory where you downloaded the key access.ilm, and then type "sudo mv access.ilm /usr/ilog/ilm/"
+		1.2.5.	To verify your license key installation, go to: cplexstudio_dir/cplex/bin/machine_dir, where "cplexstudio_dir" is the full directory name pointing to the CPLEX Optimization Studio installation directory, and "machine_dir" is the machine description that matches your particular platform"
+			(For Mac 64-bits, this is x86-64_darwin9_gcc4.0.  For example, in my computer (where my username is Jose) I would type "cd /Users/Jose/Applications/IBM/ILOG/cplex/bin/x86-64_darwin9_gcc4.0".  Of course this command will vary depending on where CPLEX is installed.)
+		1.2.6.	Run CPLEX, this is, in the terminal type "./cplex"
+				Note that If the license is not installed correctly, you will get an error message.
+
+2.	Steps for installing Rcplex
+	To install Rcplex MAC users will need to (i) have installed the package slam in R, and (ii) have the gcc compiler.  (i) To install the package "slam", open R and type install.packages("slam") in the prompt line.  (ii) You can obtain the gcc compiler by installing Xcode in your Mac.  (Xcode 3 would suffice.)
+
+	As explained with more generality on the "INSTALL" file of Rcplex, after downloading the Rcplex package, MAC users should unzip the package, and in that directory in the terminal run "R CMD INSTALL --configure-args="PKG_CFLAGS='AAA' PKG_CPPFLAGS=BBB PKG_LIBS='CCC'" Rcplex" where AAA, BBB and CCC are determined by the variables CFLAGS and CLNFLAGS in the makefile <cplex_path>/examples/<system>/<libformat>/Makefile.  More specifically, BBB is the last term in CFLAGS, and AAA are the terms previous to BBB in CFLAGS (in that order).  CCC are all the terms in CFLAGS.
+
+	For example, if I were to install Rcplex on the 64 bit version of R in my computer (where my username is Jose), in the makefile CFLAGS and CLNFLAGS would be given by
+		CFLAGS = -m64 -fPIC -I/Users/Jose/Applications/IBM/ILOG/CPLEX_Studio_Academic123/cplex/include
+		CLNFLAGS = -L/Users/Jose/Applications/IBM/ILOG/CPLEX_Studio_Academic123/cplex/lib/x86-64_darwin9_gcc4.0/static_pic -lcplex -m64 -lm -lpthread -framework CoreFoundation -framework IOKit
+
+	In this way 
+		AAA = -m64 -fPIC
+		BBB = -I/Users/Jose/Applications/IBM/ILOG/CPLEX_Studio_Academic123/cplex/include
+		CCC = -L/Users/Jose/Applications/IBM/ILOG/CPLEX_Studio_Academic123/cplex/lib/x86-64_darwin9_gcc4.0/static_pic -lcplex -m64 -lm -lpthread -framework CoreFoundation -framework IOKit
+
+	Like this, to install Rcplex on the terminal I would have to type "R CMD INSTALL --configure-args="PKG_CFLAGS='-m64 -fPIC' PKG_CPPFLAGS=-I/Users/Jose/Applications/IBM/ILOG/CPLEX_Studio_Academic123/cplex/include PKG_LIBS='-L/Users/Jose/Applications/IBM/ILOG/CPLEX_Studio_Academic123/cplex/lib/x86-64_darwin9_gcc4.0/static_pic -lcplex -m64 -lm -lpthread -framework CoreFoundation -framework IOKit'" Rcplex"
+
+	Note that one has to be in directory where the package was unzipped.  Also note that one might need to write the option sudo before the previous command depending on ones preferences on the computer.  Of course the previous command will vary depending on the version of CPLEX and where it is located in the computer.
+
+3.	Steps for installing mipmatch
+	3.1.	On the terminal, go to the directory where you have file "mipmatch_0.0-1.tar.gz" and type "R CMD INSTALL mipmatch_0.0-1.tar.gz"
+
+Remember to use the version of R for which you installed Rcplex.  The above example was for the 64 bit version.
