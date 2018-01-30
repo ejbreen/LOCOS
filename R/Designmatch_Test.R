@@ -1,8 +1,12 @@
 # Required packages:    Rglpk
-#                       designmatch
-#                       gurobi      'C:/gurobi751/win64/R/gurobi_7.5-1.zip'
+#                       designmatch 
+#                           install.packages("designmatch")
+#                       gurobi      
 
-install.packages('C:/gurobi752/win64/R/gurobi_7.5-2.zip', repos = NULL)
+# Windows
+# install.packages('C:/gurobi752/win64/R/gurobi_7.5-2.zip', repos = NULL)
+# Chromebook
+install.packages('/opt/gurobi752/linux64/R/gurobi_7.5-2_R_x86_64-pc-linux-gnu.tar.gz', repos = NULL)
 
 library(gurobi)
 library(Rglpk)
