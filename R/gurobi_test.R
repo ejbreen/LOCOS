@@ -14,3 +14,5 @@ params <- list(OutputFlag = 0)
 
 result <- gurobi(model, params)
 
+result$x
+

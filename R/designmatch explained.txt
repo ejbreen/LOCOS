@@ -1,0 +1,13 @@
+designmatch explained
+
+The most important funciton within designmatch is "bmatch"
+  This is the function for matching between 2 sets (treatment and control)
+    This is in contrast to nmatch which doesn't have a treatment indicator
+  Most of the rest of the functions are there to enable bmatch
+
+Before starting, make sure the data is all within one dataframe
+  There should be one column that is a treatment indicator
+    This column can only take values 0 and 1
+
+There are several parameters to bmatch which allow it to be used for many different purposes
+  

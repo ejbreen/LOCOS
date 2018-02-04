@@ -1,6 +1,6 @@
 # Required packages:    Rglpk
 #                       designmatch
-#                       gurobi      'C:/gurobi751/win64/R/gurobi_7.5-1.zip'
+#                       gurobi      'C:/gurobi752/win64/R/gurobi_7.5-2.zip'
 
 install.packages('C:/gurobi752/win64/R/gurobi_7.5-2.zip', repos = NULL)
 
