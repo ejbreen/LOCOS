@@ -1,19 +1,18 @@
-install.packages("simstudy")
-library("simstudy")
 
 
 
-#https://cran.r-project.org/web/packages/simstudy/vignettes/simstudy.html
+library(simstudy)
+library(gurobi)
+library(Rglpk)
+library(designmatch)
 
-#source('R/TKA Parameters Input.R')
-#currently importing data directly into pop sim paramaters file
+source("TKA population simulation parameters.R")
 
-source('R/TKA population simulation parameters.R')
+C_pop <- genData(60000, C_pop_def)
+T_pop <- genData(2000, T_pop_def)
 
-source('R/TKA population simulation creation.R')
+C_pop <- subset.data.frame(C_pop, select = -c(B, POLY, HEAD, APP))
+T_pop <- subset.data.frame(T_pop, select = -c(B, POLY, HEAD, APP))
 
-#source('R/TKA Calculations.R')
-
-#source('R/TKA data export.R')
-
+source("Bmatch_test1.R")
 

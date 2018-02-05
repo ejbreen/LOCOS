@@ -41,7 +41,8 @@ approximate = 1
 solver = list(name = solver, t_max = t_max, approximate = approximate,
               round_cplex = 0, trace_cplex = 0)
 
-out = bmatch(t_ind = t_ind, dist_mat = dist_mat, solver = solver)
+out = bmatch(t_ind = t_ind, dist_mat = dist_mat, n_controls = 5, total_groups = 100, 
+             solver = solver)
 
 
 

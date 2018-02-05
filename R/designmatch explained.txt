@@ -9,5 +9,47 @@ Before starting, make sure the data is all within one dataframe
   There should be one column that is a treatment indicator
     This column can only take values 0 and 1
 
-There are several parameters to bmatch which allow it to be used for many different purposes
+bmatch has several peramaters that adjust it's functionality
+  t_ind
+    a vector indicating treatment 
+    can only take 0's and 1's 
+      1 indicates treatment
+    should be taken directly from combined dataframe
+  MATCHING TYPE PARAMATERS
+    dist_mat
+      a matrix of distances between ever treatment and control unit
+        treatmet indexs are the rows and control units are the columns
+      this can be created by tossing the treatment indicator and a matrix of covariates into the 
+          "distmat" function
+      dist_mat has some interesting interactions with the subset_weight paramater
+    subset_weight
+      "regulates the trade-off between the total sum of distances between matched pairs and the 
+          total number of matched pairs"
+      this is just a scalar number
+      the larger the subser_weight, the more the algorythm will preference the total number of 
+          matched pairs vs the total sum of differences between the pairs
+      honestly, I'm not enitrely sure what this does
+      now on to the weird interactions
+        if subset_weight is NULL, bmatch will try to match all treated observations
+        if subset_weight is 1 and dist_mat = NULL then bmatch will solve a cardinality 
+            matching problem
+  GRAPH SHAPE PARAMATERS
+    n_controls
+      a scalar which indicates the number of controls to be matched to each treated unit
+      n_controls = 1 is pair matching
+        n_controls = 3 would be 3:1 matching
+    total_groups
+      the total number of matched pairs
+      this one is still a little weird to me
+      I do know that this cannot be larger than the number of treated units
+  mom
+  ks
+  exact
+  near_exact
+  fine
+  near_fine
+  near
+  far
+  solver
+  
   
