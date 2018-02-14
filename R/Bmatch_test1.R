@@ -16,7 +16,7 @@ combine_pops <- function(T_pop, C_pop, pct){
   return(Tot_pop)
 }
 
-Tot_pop <- combine_pops(T_pop, C_pop, .05)
+Tot_pop <- combine_pops(T_pop, C_pop, .1)
 
 attach(Tot_pop)
 
@@ -32,18 +32,18 @@ dist_mat <- distmat(t_ind, x_mat)
 subset_weight <- median(dist_mat)
 
 # Balance the covariate moments
-mom_covs <- cbind()
-mom_tols <- round(absstddif(x_mat, t_ind, 10), 2)
+mom_covs <- NULL
+mom_tols <- NULL
 mom <- list(covs = x_mat, tols = mom_tols)
 
 # # make the distributions look similar
 ks_covs <- NULL
-ks_n_grid <-NULL
+ks_n_grid <- 10
 ks_tols <- NULL
 ks <- list(covs = ks_covs, n_grid = ks_n_grid, tols = ks_tols)
 
 # exact within group matching
-exact_covs <- cbind()
+exact_covs <- cbind(B_MOP, B_COP, POLY_XPLE)
 exact <- list(covs = exact_covs)
 
 # exact with an allowed difference
@@ -66,14 +66,13 @@ approximate = 1
 solver = list(name = solver, t_max = t_max, approximate = approximate,
               round_cplex = 0, trace_cplex = 0)
 
-out = bmatch(t_ind = t_ind, dist_mat = dist_mat, n_controls = 5, total_groups = 100, 
-             solver = solver)
+out = bmatch(t_ind = t_ind, dist_mat = dist_mat, exact = exact, n_controls = 5, total_groups = sum(t_ind), solver = solver)
 
 
 
 t_id <- out$t_id
 c_id <- out$c_id
-out$group_id
+group_id <- out$group_id
 meantab(x_mat, t_ind, t_id, c_id)
 
 
