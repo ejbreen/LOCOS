@@ -26,14 +26,39 @@ x_mat <- cbind(B_MOP, B_COP, B_COC, B_DM, POLY_UHWMPE, POLY_XPLE, POLY_A_XPLE,
                HEAD_22mm, HEAD_28mm, HEAD_32mm, HEAD_36mm, HEAD_40mm, HEAD_44mm,
                APP_anterior, APP_anterolateral, APP_posterior, APP_transtrochanteric,
                S_VOLLUME, AGE, FEMALE, BMI)
-
 dist_mat <- distmat(t_ind, x_mat)
+
 
 subset_weight <- median(dist_mat)
 
+# Balance the covariate moments
+mom_covs <- cbind()
 mom_tols <- round(absstddif(x_mat, t_ind, 10), 2)
 mom <- list(covs = x_mat, tols = mom_tols)
 
+# # make the distributions look similar
+ks_covs <- NULL
+ks_n_grid <-NULL
+ks_tols <- NULL
+ks <- list(covs = ks_covs, n_grid = ks_n_grid, tols = ks_tols)
+
+# exact within group matching
+exact_covs <- cbind()
+exact <- list(covs = exact_covs)
+
+# exact with an allowed difference
+near_exact_covs <- NULL
+near_exact_devs <- NULL
+near_exact <- list(covs = near_exact_covs, devs = near_exact_devs)
+
+# exact overall matching
+fine_covs <- cbind()
+find <- list(covs = fine_covs)
+
+# fine but with an allowed differenec
+near_fine_covs <- NULL
+near_fine_devs <- NULL
+near_fine <- list(covs = near_fine_covs, devs = near_fine_devs)
 
 t_max = 60*5
 solver = "gurobi" 

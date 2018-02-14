@@ -1,55 +1,82 @@
 designmatch explained
 
-The most important funciton within designmatch is "bmatch"
-  This is the function for matching between 2 sets (treatment and control)
-    This is in contrast to nmatch which doesn't have a treatment indicator
-  Most of the rest of the functions are there to enable bmatch
+The most important function within designmatch is "bmatch"
+	This is the function for matching between 2 sets (treatment and control)
+		This is in contrast to nmatch which doesn't have a treatment indicator
+	Most of the rest of the functions are there to enable bmatch
 
 Before starting, make sure the data is all within one dataframe
-  There should be one column that is a treatment indicator
-    This column can only take values 0 and 1
+	There should be one column that is a treatment indicator
+		This column can only take values 0 and 1
 
-bmatch has several peramaters that adjust it's functionality
-  t_ind
-    a vector indicating treatment 
-    can only take 0's and 1's 
-      1 indicates treatment
-    should be taken directly from combined dataframe
-  MATCHING TYPE PARAMATERS
-    dist_mat
-      a matrix of distances between ever treatment and control unit
-        treatmet indexs are the rows and control units are the columns
-      this can be created by tossing the treatment indicator and a matrix of covariates into the 
-          "distmat" function
-      dist_mat has some interesting interactions with the subset_weight paramater
-    subset_weight
-      "regulates the trade-off between the total sum of distances between matched pairs and the 
-          total number of matched pairs"
-      this is just a scalar number
-      the larger the subser_weight, the more the algorythm will preference the total number of 
-          matched pairs vs the total sum of differences between the pairs
-      honestly, I'm not enitrely sure what this does
-      now on to the weird interactions
-        if subset_weight is NULL, bmatch will try to match all treated observations
-        if subset_weight is 1 and dist_mat = NULL then bmatch will solve a cardinality 
-            matching problem
-  GRAPH SHAPE PARAMATERS
-    n_controls
-      a scalar which indicates the number of controls to be matched to each treated unit
-      n_controls = 1 is pair matching
-        n_controls = 3 would be 3:1 matching
-    total_groups
-      the total number of matched pairs
-      this one is still a little weird to me
-      I do know that this cannot be larger than the number of treated units
-  mom
-  ks
-  exact
-  near_exact
-  fine
-  near_fine
-  near
-  far
-  solver
+bmatch has several parameters that adjust it's functionality
+	t_ind
+		a vector indicating treatment 
+		can only take 0's and 1's 
+			1 indicates treatment
+		should be taken directly from combined dataframe
+	MATCHING TYPE PARAMATERS
+		dist_mat
+		a matrix of distances between ever treatment and control unit
+			treatment indexs are the rows and control units are the columns
+			this can be created by tossing the treatment indicator and a matrix of covariates into the 
+				"distmat" function
+			dist_mat has some interesting interactions with the subset_weight parameter
+		subset_weight
+			"regulates the trade-off between the total sum of distances between matched pairs and the 
+				total number of matched pairs"
+			this is just a scalar number
+				the larger the subser_weight, the more the algorithm will preference the total number of 
+				matched pairs vs the total sum of differences between the pairs
+			honestly, I'm not entirely sure what this does
+			now on to the weird interactions
+				if subset_weight is NULL, bmatch will try to match all treated observations
+				if subset_weight is 1 and dist_mat = NULL then bmatch will solve a cardinality 
+					matching problem
+	GRAPH SHAPE PARAMATERS
+		n_controls
+			a scalar which indicates the number of controls to be matched to each treated unit
+			n_controls = 1 is pair matching
+			n_controls = 3 would be 3:1 matching
+		total_groups
+			the total number of matched pairs
+			this one is still a little weird to me
+			I do know that this cannot be larger than the number of treated units
+	COVARIATE BALANCE PARAMETERS
+		each parameter is passed as a list of it's elements
+		all of these parameters have the same first variable "covs"
+			for each of these parameters, create a new matrix by using "cbind" on the covariates 
+				you would like to use with that parameter
+			the indexs need to be the same for t_ind and each covariate
+		mom
+			moment balance parameters
+			this has 2 elements beyond covs
+				tols
+					a vector that contains the tolerances for each covariate
+					this can be made using "absstddif" (absolute standardized deviation)
+					if mom_covs is specified, this must be too
+				targets
+					a vector containing the target moments for each covariate
+					optional
+				both of these vectors need to be the same length as mom_covs
+		ks
+			Kolmogorov-Smirnov parameters
+			this one is a bit beyond me
+		exact
+			pretty much exactly like you would think, these covariates must be matched exactly
+		near_exact
+			same as "exact" but allows the covariates in the matches to differ by a specified deviation
+				this deviation is specified in the "devs" elements
+					"devs" must be the same length as "near_exact_covs"
+		fine
+			the covariates that are to be matched using fine matching
+			balances the covariates within the total matched sample but not within individual matches
+		near_fine
+			same as "fine" but with allowed deviations 
+				this deviation is specified in the "devs" elements
+					"devs" must be the same length as "near_fine_covs"
+		near
+		far
+	solver
   
   
