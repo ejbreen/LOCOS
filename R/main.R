@@ -2,9 +2,6 @@
 
 
 library(simstudy)
-library(gurobi)
-library(Rglpk)
-library(designmatch)
 
 source("R/TKA population simulation parameters.R")
 
@@ -14,5 +11,4 @@ T_pop <- genData(2000, T_pop_def)
 C_pop <- subset.data.frame(C_pop, select = -c(B, POLY, HEAD, APP))
 T_pop <- subset.data.frame(T_pop, select = -c(B, POLY, HEAD, APP))
 
-source("R/Bmatch_test1.R")
 

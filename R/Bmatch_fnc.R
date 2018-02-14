@@ -1,16 +1,9 @@
-install.packages('C:/gurobi752/win64/R/gurobi_7.5-2.zip', repos = NULL)
-
-library(gurobi)
-library(Rglpk)
-library(designmatch)
-
-combine_pops <- function(T_pop, C_pop, pct){
+combine_pops <- function(T_pop, C_pop, pct = .05){
   T_pop_s <- head(T_pop, nrow(T_pop)*pct)
   C_pop_s <- head(C_pop, nrow(C_pop)*pct)
   Tot_pop <- rbind(T_pop_s, C_pop_s)
   return(Tot_pop)
 }
-Tot_pop <- combine_pops(T_pop, C_pop, .1)
 
 bmatch_fnc <- function(Pop){
   
