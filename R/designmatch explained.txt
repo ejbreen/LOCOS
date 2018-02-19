@@ -76,7 +76,24 @@ bmatch has several parameters that adjust it's functionality
 				this deviation is specified in the "devs" elements
 					"devs" must be the same length as "near_fine_covs"
 		near
+			covariates that need to be within a certain amount either within groups or between groups
+			pairs is a vector of scalars that specify the maximum distance between elements of groups
+			groups is a vector of scalars that specify the maximum distance between groups
 		far
+			same as near but specifying a minimum distance between elements of a group
 	solver
-  
-  
+		specifies the solver parameters
+		for what we are doing:
+			name = "gurobi"
+			t_max can be as high as we'd like
+				the documentation doesn't specify this but I think that it's in seconds
+			approximate = 1
+				might be faster if set to 0 but would only allow pair matching
+			round_cplex
+				this is cplex specific so I'd ignore it
+			trace = 0
+				turns the solver output on or off
+				it should be left off except for troubleshooting
+	
+	
+	
