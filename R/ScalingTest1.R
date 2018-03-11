@@ -64,6 +64,6 @@ runScalingTest <- function(Tot_pop, scaling_factor){
   
   T_run = proc.time()-T_run
   T_all = proc.time()-T_all
-  
-  return()
+  Timings = list(all=T_all, setup=T_setup, run=T_run)
+  return(Timings, out)
 }
