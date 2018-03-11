@@ -87,7 +87,7 @@ bmatch = function(t_ind, dist_mat = NULL, subset_weight = NULL, n_controls = 1, 
   }
   
   if (is.null(solver)) {
-    solver = 'glpk'
+    solver = 'gurobi'
     t_max = 60 * 15
     approximate = 1
   } else {
@@ -95,7 +95,7 @@ bmatch = function(t_ind, dist_mat = NULL, subset_weight = NULL, n_controls = 1, 
     approximate = solver$approximate
     trace = solver$trace
     round_cplex = solver$round_cplex
-    solver = solver$name
+    solver = 'gurobi'
   }
   
   
@@ -133,78 +133,76 @@ bmatch = function(t_ind, dist_mat = NULL, subset_weight = NULL, n_controls = 1, 
   
   #! Find matches and calculate the elapsed time
   #! Gurobi
-  if (solver == "gurobi") {
-    #library(gurobi)
-    if (requireNamespace('gurobi', quietly=TRUE)) {
-      cat(format("  Gurobi optimizer is open..."), "\n")
-      model = list()
-      model$obj = cvec
-      model$A = Amat
-      model$sense = rep(NA, length(sense))
-      model$sense[sense=="E"] = '='
-      model$sense[sense=="L"] = '<='
-      model$sense[sense=="G"] = '>='
-      model$rhs = bvec
-      model$vtypes = vtype
-      model$ub = ub
-      
-      t_lim = list(TimeLimit = t_max, OutputFlag = trace)
-      
-      cat(format("  Finding the optimal matches..."), "\n")
-      ptm = proc.time()
-      out = gurobi::gurobi(model, t_lim)
-      time = (proc.time()-ptm)[3]
-      
-      if (out$status == "INFEASIBLE") {
-        cat(format("  Error: problem infeasible!"), "\n")
-        obj_total = NA
-        obj_dist_mat = NA
-        t_id = NA
-        c_id = NA
-        group_id = NA
-        time = NA
-      }
-      
-      if (out$status ==  "OPTIMAL" || out$status == "TIME_LIMIT") {
-        
-        if (out$status == "OPTIMAL") {
-          cat(format("  Optimal matches found"), "\n")
-        }
-        
-        else {
-          cat(format("  Time limit reached, best suboptimal solution given"), "\n")
-        }
-        
-        if (approximate == 1) {
-          rel = .relaxation_b(n_t, n_c, out$x, dist_mat, subset_weight, "gurobi", round_cplex, trace)
-          out$x = rel$sol
-          out$objval = rel$obj
-          time = time + rel$time
-        }
-        
-        #! Matched units indexes
-        t_id = unique(sort(rep(1:n_t, n_c))[out$x[1:(n_t*n_c)]==1])
-        c_id = (c_index+n_t)[out$x[1:(n_t*n_c)]==1]
-        
-        #! Group (or pair) identifier
-        group_id_t = 1:(length(t_id))
-        group_id_c = sort(rep(1:(length(t_id)), n_controls))
-        group_id = c(group_id_t, group_id_c)
-        
-        #! Optimal value of the objective function
-        obj_total = out$objval
-        
-        if (!is.null(dist_mat)) {
-          obj_dist_mat = sum(c(as.vector(matrix(t(dist_mat), nrow = 1, byrow = TRUE)) * out$x[1:(n_t*n_c)]==1))
-        } else {
-          obj_dist_mat = NULL
-        }
-      }
-    } else {
-      stop('Required solver not installed')
+  #library(gurobi)
+  if (requireNamespace('gurobi', quietly=TRUE)) {
+    cat(format("  Gurobi optimizer is open..."), "\n")
+    model = list()
+    model$obj = cvec
+    model$A = Amat
+    model$sense = rep(NA, length(sense))
+    model$sense[sense=="E"] = '='
+    model$sense[sense=="L"] = '<='
+    model$sense[sense=="G"] = '>='
+    model$rhs = bvec
+    model$vtypes = vtype
+    model$ub = ub
+    
+    t_lim = list(TimeLimit = t_max, OutputFlag = trace)
+    
+    cat(format("  Finding the optimal matches..."), "\n")
+    ptm = proc.time()
+    out = gurobi::gurobi(model, t_lim)
+    time = (proc.time()-ptm)[3]
+    
+    if (out$status == "INFEASIBLE") {
+      cat(format("  Error: problem infeasible!"), "\n")
+      obj_total = NA
+      obj_dist_mat = NA
+      t_id = NA
+      c_id = NA
+      group_id = NA
+      time = NA
     }
     
+    if (out$status ==  "OPTIMAL" || out$status == "TIME_LIMIT") {
+      
+      if (out$status == "OPTIMAL") {
+        cat(format("  Optimal matches found"), "\n")
+      }
+      
+      else {
+        cat(format("  Time limit reached, best suboptimal solution given"), "\n")
+      }
+      
+      if (approximate == 1) {
+        rel = .relaxation_b(n_t, n_c, out$x, dist_mat, subset_weight, "gurobi", round_cplex, trace)
+        out$x = rel$sol
+        out$objval = rel$obj
+        time = time + rel$time
+      }
+      
+      #! Matched units indexes
+      t_id = unique(sort(rep(1:n_t, n_c))[out$x[1:(n_t*n_c)]==1])
+      c_id = (c_index+n_t)[out$x[1:(n_t*n_c)]==1]
+      
+      #! Group (or pair) identifier
+      group_id_t = 1:(length(t_id))
+      group_id_c = sort(rep(1:(length(t_id)), n_controls))
+      group_id = c(group_id_t, group_id_c)
+      
+      #! Optimal value of the objective function
+      obj_total = out$objval
+      
+      if (!is.null(dist_mat)) {
+        obj_dist_mat = sum(c(as.vector(matrix(t(dist_mat), nrow = 1, byrow = TRUE)) * out$x[1:(n_t*n_c)]==1))
+      } else {
+        obj_dist_mat = NULL
+      }
+    }
+  } else {
+    stop('Required solver not installed')
   }
+  
   #! Output
   return(list(obj_total = obj_total, obj_dist_mat = obj_dist_mat, 
               t_id = t_id, c_id = c_id, group_id = group_id, time = time, status=out$status))
@@ -1616,8 +1614,6 @@ pairsplot <-
   return(list(sol = sol, obj = obj, time = time))
   
 }
-
-
 
 # Solves relaxation problem
 .relaxation_n = function(n_tot, coef, dist_mat, subset_weight, solver, round_cplex, trace) {
