@@ -1,4 +1,6 @@
-# required for gurobi
+install.packages('simstudy', repos = 'https://cloud.r-project.org/')
+library(simstudy)
+
 install.packages('slam', repos = 'https://cloud.r-project.org/') # required for gurobi
 library(slam)
 install.packages('MASS',  repos = 'https://cloud.r-project.org/')

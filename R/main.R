@@ -18,8 +18,21 @@ T_pop <- subset.data.frame(T_pop, select = -c(B, POLY, HEAD, APP))
 
 source('R/ScalingTest1.R')
 
-Rprofmem(filename = 'Rprof.out', append = FALSE, threshold = 1000)
-out <-  runScalingTest(T_pop, C_pop, .1)
-Timings <- out$Timings
-bmatch_out <- out$bmatch_out
+scales <-  c(.01, .05, .1, .15, .2, .25, .3, .35, .4)
+scales_small <- c(.01, .05, .1, .15)
+
+TimingDF <- data.frame(scale_factor = 0,
+                      section = 0,
+                      user = 0.0,
+                      system = 0.0,
+                      total = 0.0)
+
+for(i in scales_small){
+  out <-  runScalingTest(T_pop, C_pop, i)
+  TimingDF <- rbind(TimingDF, c(i, 1, unname(out$Timings$setup[1:3])))
+  TimingDF <- rbind(TimingDF, c(i, 2, unname(out$Timings$run[1:3])))
+  TimingDF <- rbind(TimingDF, c(i, 3, unname(out$Timings$all[1:3])))
+}
+
+write.csv(TimingDF, file = paste('Timings-',scales[1],'-',tail(scales, 1), '.csv', sep = ""))
 
