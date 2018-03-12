@@ -3,7 +3,16 @@ library(gurobi)
 
 source('R/designmatch_adapted.R')
 
-runScalingTest <- function(Tot_pop, scaling_factor){
+combine_pops <- function(T_pop, C_pop, pct){
+  T_pop_s <- head(T_pop, nrow(T_pop)*pct)
+  C_pop_s <- head(C_pop, nrow(C_pop)*pct)
+  Tot_pop <- rbind(T_pop_s, C_pop_s)
+  return(Tot_pop)
+}
+
+runScalingTest <- function(T_pop, C_pop, scaling_factor){
+  
+  Tot_pop = combine_pops(T_pop, C_pop, scaling_factor)
   
   T_all = proc.time()
   T_build = T_all
@@ -64,6 +73,6 @@ runScalingTest <- function(Tot_pop, scaling_factor){
   
   T_run = proc.time()-T_run
   T_all = proc.time()-T_all
-  Timings = list(all=T_all, setup=T_setup, run=T_run)
-  return(Timings, out)
+  Timings = list(all=T_all, setup=T_build, run=T_run)
+  return(list(Timings = Timings, bmatch_out = out))
 }
