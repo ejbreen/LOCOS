@@ -1,0 +1,60 @@
+## PBS preamble
+
+# the first block covers interaction
+## name of file
+#PBS -N bmatch_scale_test
+## email address to send info to
+#PBS -M ejbreen@umich.edu
+## send an email when the script begins to run, aborts, or ends
+#PBS -m bae	
+
+# the second block covers payment and routing
+## which flux accout to use
+#PBS -A engin_flux
+### for engin_flux the max proc per user is 20 with a
+### resulting max mem of 80
+## this should always be -l qos=flux
+#PBS -l qos=flux
+## defines which queue to use, will be the account suffix
+#PBS -q flux
+
+# the third block covers job characteristics
+## the machines (nodes), processors per maching(ppn), 
+## and memory per processor(ppn) that your project will need
+#PBS -l nodes=1:ppn=1,pmem=80gb
+## max runtime (dd:hh:mm:ss)
+#PBS -l walltime=1:00:00:00
+## joins the error stream to the output stream
+#PBS -j oe
+## sets the environment to the one the job was submitted from
+#PBS -V
+
+## needed to get a gurobi licence
+### the number should be the number of licences or processes
+### of gurobi that will be needed
+#PBS -l gres=gurobi:1
+
+## End PBS preamble
+
+if [ -s "$PBS_NODEFILE" ] ; then
+    echo "Running on"
+    uniq -c $PBS_NODEFILE
+fi
+
+if [ -d "$PBS_O_WORKDIR" ] ; then
+    cd $PBS_O_WORKDIR
+    echo "Running from $PBS_O_WORKDIR"
+fi
+
+##  Put your job commands after this line
+
+R CMD BATCH --no-restore --no-save R/main.R timetest.out
+
+
+
+
+
+
+
+
+
