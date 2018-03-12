@@ -1,6 +1,6 @@
 
-source('R/setup_home.R')
-# source('R/setup_flux.R')
+# source('R/setup_home.R')
+source('R/setup_flux.R')
 
 library('simstudy')
 
