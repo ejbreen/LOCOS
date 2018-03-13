@@ -18,7 +18,7 @@ T_pop <- subset.data.frame(T_pop, select = -c(B, POLY, HEAD, APP))
 
 source('R/ScalingTest1.R')
 
-scales <-  c(.1, .15, .2, .25, .3, .35, .4, .45, .5)
+scales <-  c(.2, .25, .3, .35, .4, .45, .5)
 scales_small <- c(.01, .05, .1, .15)
 
 TimingDF <- data.frame(scale_factor = 0,
@@ -28,6 +28,7 @@ TimingDF <- data.frame(scale_factor = 0,
                       total = 0.0)
 
 for(i in scales){
+  print(paste('Running at scaling factor- ', i, sep = "")
   out <-  runScalingTest(T_pop, C_pop, i)
   TimingDF <- rbind(TimingDF, c(i, 1, unname(out$Timings$setup[1:3])))
   TimingDF <- rbind(TimingDF, c(i, 2, unname(out$Timings$run[1:3])))
