@@ -18,7 +18,7 @@ T_pop <- subset.data.frame(T_pop, select = -c(B, POLY, HEAD, APP))
 
 source('R/ScalingTest1.R')
 
-scales <-  c(.5, .55, .6)
+scales <-  c(.2, .6)
 scales_small <- c(.01, .05, .1, .15)
 
 TimingDF <- data.frame(scale_factor = 0,
