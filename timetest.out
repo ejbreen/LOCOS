@@ -45,7 +45,7 @@ installing to /home/ejbreen/R/x86_64-pc-linux-gnu-library/3.4/simstudy/libs
 * DONE (simstudy)
 
 The downloaded source packages are in
-	‘/tmp/RtmpEYzW3q/downloaded_packages’
+	‘/tmp/RtmpZD3z9g/downloaded_packages’
 Loading required package: data.table
 Installing package into ‘/home/ejbreen/R/x86_64-pc-linux-gnu-library/3.4’
 (as ‘lib’ is unspecified)
@@ -58,7 +58,7 @@ ERROR: failed to lock directory ‘/home/ejbreen/R/x86_64-pc-linux-gnu-library/3
 Try removing ‘/home/ejbreen/R/x86_64-pc-linux-gnu-library/3.4/00LOCK-slam’
 
 The downloaded source packages are in
-	‘/tmp/RtmpEYzW3q/downloaded_packages’
+	‘/tmp/RtmpZD3z9g/downloaded_packages’
 Installing package into ‘/home/ejbreen/R/x86_64-pc-linux-gnu-library/3.4’
 (as ‘lib’ is unspecified)
 trying URL 'https://cloud.r-project.org/src/contrib/MASS_7.3-49.tar.gz'
@@ -85,7 +85,7 @@ installing to /home/ejbreen/R/x86_64-pc-linux-gnu-library/3.4/MASS/libs
 * DONE (MASS)
 
 The downloaded source packages are in
-	‘/tmp/RtmpEYzW3q/downloaded_packages’
+	‘/tmp/RtmpZD3z9g/downloaded_packages’
 Installing package into ‘/home/ejbreen/R/x86_64-pc-linux-gnu-library/3.4’
 (as ‘lib’ is unspecified)
 trying URL 'https://cloud.r-project.org/src/contrib/lattice_0.20-35.tar.gz'
@@ -113,7 +113,7 @@ installing to /home/ejbreen/R/x86_64-pc-linux-gnu-library/3.4/lattice/libs
 * DONE (lattice)
 
 The downloaded source packages are in
-	‘/tmp/RtmpEYzW3q/downloaded_packages’
+	‘/tmp/RtmpZD3z9g/downloaded_packages’
 Installing package into ‘/home/ejbreen/R/x86_64-pc-linux-gnu-library/3.4’
 (as ‘lib’ is unspecified)
 * installing *binary* package ‘gurobi’ ...
@@ -139,7 +139,7 @@ In install.packages("slam", repos = "https://cloud.r-project.org/") :
 > 
 > source('R/ScalingTest1.R')
 > 
-> scales <-  c(.3, .35, .4, .45, .5)
+> scales <-  c(.4, .45, .5, .55, .6, .65, .7, .75)
 > scales_small <- c(.01, .05, .1, .15)
 > 
 > TimingDF <- data.frame(scale_factor = 0,
@@ -155,58 +155,13 @@ In install.packages("slam", repos = "https://cloud.r-project.org/") :
 +   TimingDF <- rbind(TimingDF, c(i, 2, unname(out$Timings$run[1:3])))
 +   TimingDF <- rbind(TimingDF, c(i, 3, unname(out$Timings$all[1:3])))
 + }
-[1] "Running at scaling factor- 0.3"
-  Building the matching problem... 
-  Gurobi optimizer is open... 
-  Finding the optimal matches... 
-  Optimal matches found 
-[1] "Running at scaling factor- 0.35"
-The following objects are masked from Tot_pop (pos = 3):
-
-    AGE, APP_anterior, APP_anterolateral, APP_posterior,
-    APP_transtrochanteric, B_COC, B_COP, B_DM, B_MOP, BMI, FEMALE,
-    HEAD_22mm, HEAD_28mm, HEAD_32mm, HEAD_36mm, HEAD_40mm, HEAD_44mm,
-    id, IMPLANT, POLY_A_XPLE, POLY_UHWMPE, POLY_XPLE, S_VOLLUME
-
-  Building the matching problem... 
-  Gurobi optimizer is open... 
-  Finding the optimal matches... 
-  Optimal matches found 
 [1] "Running at scaling factor- 0.4"
-The following objects are masked from Tot_pop (pos = 3):
-
-    AGE, APP_anterior, APP_anterolateral, APP_posterior,
-    APP_transtrochanteric, B_COC, B_COP, B_DM, B_MOP, BMI, FEMALE,
-    HEAD_22mm, HEAD_28mm, HEAD_32mm, HEAD_36mm, HEAD_40mm, HEAD_44mm,
-    id, IMPLANT, POLY_A_XPLE, POLY_UHWMPE, POLY_XPLE, S_VOLLUME
-
-The following objects are masked from Tot_pop (pos = 4):
-
-    AGE, APP_anterior, APP_anterolateral, APP_posterior,
-    APP_transtrochanteric, B_COC, B_COP, B_DM, B_MOP, BMI, FEMALE,
-    HEAD_22mm, HEAD_28mm, HEAD_32mm, HEAD_36mm, HEAD_40mm, HEAD_44mm,
-    id, IMPLANT, POLY_A_XPLE, POLY_UHWMPE, POLY_XPLE, S_VOLLUME
-
   Building the matching problem... 
   Gurobi optimizer is open... 
   Finding the optimal matches... 
   Optimal matches found 
 [1] "Running at scaling factor- 0.45"
 The following objects are masked from Tot_pop (pos = 3):
-
-    AGE, APP_anterior, APP_anterolateral, APP_posterior,
-    APP_transtrochanteric, B_COC, B_COP, B_DM, B_MOP, BMI, FEMALE,
-    HEAD_22mm, HEAD_28mm, HEAD_32mm, HEAD_36mm, HEAD_40mm, HEAD_44mm,
-    id, IMPLANT, POLY_A_XPLE, POLY_UHWMPE, POLY_XPLE, S_VOLLUME
-
-The following objects are masked from Tot_pop (pos = 4):
-
-    AGE, APP_anterior, APP_anterolateral, APP_posterior,
-    APP_transtrochanteric, B_COC, B_COP, B_DM, B_MOP, BMI, FEMALE,
-    HEAD_22mm, HEAD_28mm, HEAD_32mm, HEAD_36mm, HEAD_40mm, HEAD_44mm,
-    id, IMPLANT, POLY_A_XPLE, POLY_UHWMPE, POLY_XPLE, S_VOLLUME
-
-The following objects are masked from Tot_pop (pos = 5):
 
     AGE, APP_anterior, APP_anterolateral, APP_posterior,
     APP_transtrochanteric, B_COC, B_COP, B_DM, B_MOP, BMI, FEMALE,
@@ -232,14 +187,26 @@ The following objects are masked from Tot_pop (pos = 4):
     HEAD_22mm, HEAD_28mm, HEAD_32mm, HEAD_36mm, HEAD_40mm, HEAD_44mm,
     id, IMPLANT, POLY_A_XPLE, POLY_UHWMPE, POLY_XPLE, S_VOLLUME
 
-The following objects are masked from Tot_pop (pos = 5):
+  Building the matching problem... 
+  Gurobi optimizer is open... 
+  Finding the optimal matches... 
+  Optimal matches found 
+[1] "Running at scaling factor- 0.55"
+The following objects are masked from Tot_pop (pos = 3):
 
     AGE, APP_anterior, APP_anterolateral, APP_posterior,
     APP_transtrochanteric, B_COC, B_COP, B_DM, B_MOP, BMI, FEMALE,
     HEAD_22mm, HEAD_28mm, HEAD_32mm, HEAD_36mm, HEAD_40mm, HEAD_44mm,
     id, IMPLANT, POLY_A_XPLE, POLY_UHWMPE, POLY_XPLE, S_VOLLUME
 
-The following objects are masked from Tot_pop (pos = 6):
+The following objects are masked from Tot_pop (pos = 4):
+
+    AGE, APP_anterior, APP_anterolateral, APP_posterior,
+    APP_transtrochanteric, B_COC, B_COP, B_DM, B_MOP, BMI, FEMALE,
+    HEAD_22mm, HEAD_28mm, HEAD_32mm, HEAD_36mm, HEAD_40mm, HEAD_44mm,
+    id, IMPLANT, POLY_A_XPLE, POLY_UHWMPE, POLY_XPLE, S_VOLLUME
+
+The following objects are masked from Tot_pop (pos = 5):
 
     AGE, APP_anterior, APP_anterolateral, APP_posterior,
     APP_transtrochanteric, B_COC, B_COP, B_DM, B_MOP, BMI, FEMALE,
@@ -249,11 +216,3 @@ The following objects are masked from Tot_pop (pos = 6):
   Building the matching problem... 
   Gurobi optimizer is open... 
   Finding the optimal matches... 
-  Optimal matches found 
-> 
-> write.csv(TimingDF, file = paste('Timings-',scales[1],'-',tail(scales, 1), '.csv', sep = ""))
-> 
-> 
-> proc.time()
-    user   system  elapsed 
-2299.036 3129.987 5443.127 

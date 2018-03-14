@@ -1,0 +1,4 @@
+Running on
+      1 nyx6196
+Running from /home/ejbreen/LOCOS
+/sw/arcts/centos7/R/3.4.1/lib64/R/bin/BATCH: line 60:   307 Killed                  ${R_HOME}/bin/R -f ${in} ${opts} ${R_BATCH_OPTIONS} > ${out} 2>&1
