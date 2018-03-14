@@ -4,3 +4,4 @@
 .Ruserdata
 *.pyc
 gurobi.log
+*_pop *
