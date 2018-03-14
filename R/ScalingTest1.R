@@ -59,7 +59,7 @@ runScalingTest <- function(T_pop, C_pop, scaling_factor){
   near_fine_devs = NULL
   near_fine = list(covs = near_fine_covs, devs = near_fine_devs)
   
-  t_max = 60*5
+  t_max = 60*60*2
   solver = "gurobi" 
   approximate = 1
   solver = list(name = solver, t_max = t_max, approximate = approximate,
