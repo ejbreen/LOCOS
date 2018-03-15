@@ -21,9 +21,9 @@
 # the third block covers job characteristics
 ## the machines (nodes), processors per maching(ppn), 
 ## and memory per processor(ppn) that your project will need
-#PBS -l nodes=1:ppn=1,pmem=80gb
+#PBS -l nodes=1:ppn=1,pmem=75gb
 ## max runtime (dd:hh:mm:ss)
-#PBS -l walltime=1:00:00:00
+#PBS -l walltime=12:00:00
 ## joins the error stream to the output stream
 #PBS -j oe
 ## sets the environment to the one the job was submitted from

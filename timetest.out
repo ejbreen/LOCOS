@@ -19,7 +19,7 @@ Type 'q()' to quit R.
 
 > 
 > # source('R/setup_home.R')
-> source('R/setup_flux.R')
+> source('R/setup_chromebook.R')
 Installing package into ‘/home/ejbreen/R/x86_64-pc-linux-gnu-library/3.4’
 (as ‘lib’ is unspecified)
 trying URL 'https://cloud.r-project.org/src/contrib/simstudy_0.1.8.tar.gz'
@@ -45,7 +45,7 @@ installing to /home/ejbreen/R/x86_64-pc-linux-gnu-library/3.4/simstudy/libs
 * DONE (simstudy)
 
 The downloaded source packages are in
-	‘/tmp/RtmpZD3z9g/downloaded_packages’
+	‘/tmp/RtmpZtOmAQ/downloaded_packages’
 Loading required package: data.table
 Installing package into ‘/home/ejbreen/R/x86_64-pc-linux-gnu-library/3.4’
 (as ‘lib’ is unspecified)
@@ -58,7 +58,7 @@ ERROR: failed to lock directory ‘/home/ejbreen/R/x86_64-pc-linux-gnu-library/3
 Try removing ‘/home/ejbreen/R/x86_64-pc-linux-gnu-library/3.4/00LOCK-slam’
 
 The downloaded source packages are in
-	‘/tmp/RtmpZD3z9g/downloaded_packages’
+	‘/tmp/RtmpZtOmAQ/downloaded_packages’
 Installing package into ‘/home/ejbreen/R/x86_64-pc-linux-gnu-library/3.4’
 (as ‘lib’ is unspecified)
 trying URL 'https://cloud.r-project.org/src/contrib/MASS_7.3-49.tar.gz'
@@ -85,7 +85,7 @@ installing to /home/ejbreen/R/x86_64-pc-linux-gnu-library/3.4/MASS/libs
 * DONE (MASS)
 
 The downloaded source packages are in
-	‘/tmp/RtmpZD3z9g/downloaded_packages’
+	‘/tmp/RtmpZtOmAQ/downloaded_packages’
 Installing package into ‘/home/ejbreen/R/x86_64-pc-linux-gnu-library/3.4’
 (as ‘lib’ is unspecified)
 trying URL 'https://cloud.r-project.org/src/contrib/lattice_0.20-35.tar.gz'
@@ -113,14 +113,17 @@ installing to /home/ejbreen/R/x86_64-pc-linux-gnu-library/3.4/lattice/libs
 * DONE (lattice)
 
 The downloaded source packages are in
-	‘/tmp/RtmpZD3z9g/downloaded_packages’
+	‘/tmp/RtmpZtOmAQ/downloaded_packages’
 Installing package into ‘/home/ejbreen/R/x86_64-pc-linux-gnu-library/3.4’
 (as ‘lib’ is unspecified)
-* installing *binary* package ‘gurobi’ ...
-* DONE (gurobi)
-Warning message:
-In install.packages("slam", repos = "https://cloud.r-project.org/") :
+Warning: invalid package ‘/opt/gurobi752/linux64/R/gurobi_7.5-2_R_x86_64-pc-linux-gnu.tar.gz’
+Error: ERROR: no packages specified
+Warning messages:
+1: In install.packages("slam", repos = "https://cloud.r-project.org/") :
   installation of package ‘slam’ had non-zero exit status
+2: In install.packages("/opt/gurobi752/linux64/R/gurobi_7.5-2_R_x86_64-pc-linux-gnu.tar.gz",  :
+  installation of package ‘/opt/gurobi752/linux64/R/gurobi_7.5-2_R_x86_64-pc-linux-gnu.tar.gz’ had non-zero exit status
+> #source('R/setup_flux.R')
 > 
 > library('simstudy')
 > 
@@ -139,7 +142,7 @@ In install.packages("slam", repos = "https://cloud.r-project.org/") :
 > 
 > source('R/ScalingTest1.R')
 > 
-> scales <-  c(.4, .45, .5, .55, .6, .65, .7, .75)
+> scales <-  c(.2, .6)
 > scales_small <- c(.01, .05, .1, .15)
 > 
 > TimingDF <- data.frame(scale_factor = 0,
@@ -148,19 +151,19 @@ In install.packages("slam", repos = "https://cloud.r-project.org/") :
 +                       system = 0.0,
 +                       total = 0.0)
 > 
-> for(i in scales){
+> for(i in scales_small){
 +   print(paste('Running at scaling factor- ', i, sep = ""))
 +   out <-  runScalingTest(T_pop, C_pop, i)
 +   TimingDF <- rbind(TimingDF, c(i, 1, unname(out$Timings$setup[1:3])))
 +   TimingDF <- rbind(TimingDF, c(i, 2, unname(out$Timings$run[1:3])))
 +   TimingDF <- rbind(TimingDF, c(i, 3, unname(out$Timings$all[1:3])))
 + }
-[1] "Running at scaling factor- 0.4"
+[1] "Running at scaling factor- 0.01"
   Building the matching problem... 
   Gurobi optimizer is open... 
   Finding the optimal matches... 
   Optimal matches found 
-[1] "Running at scaling factor- 0.45"
+[1] "Running at scaling factor- 0.05"
 The following objects are masked from Tot_pop (pos = 3):
 
     AGE, APP_anterior, APP_anterolateral, APP_posterior,
@@ -172,7 +175,7 @@ The following objects are masked from Tot_pop (pos = 3):
   Gurobi optimizer is open... 
   Finding the optimal matches... 
   Optimal matches found 
-[1] "Running at scaling factor- 0.5"
+[1] "Running at scaling factor- 0.1"
 The following objects are masked from Tot_pop (pos = 3):
 
     AGE, APP_anterior, APP_anterolateral, APP_posterior,
@@ -191,7 +194,7 @@ The following objects are masked from Tot_pop (pos = 4):
   Gurobi optimizer is open... 
   Finding the optimal matches... 
   Optimal matches found 
-[1] "Running at scaling factor- 0.55"
+[1] "Running at scaling factor- 0.15"
 The following objects are masked from Tot_pop (pos = 3):
 
     AGE, APP_anterior, APP_anterolateral, APP_posterior,
@@ -216,3 +219,11 @@ The following objects are masked from Tot_pop (pos = 5):
   Building the matching problem... 
   Gurobi optimizer is open... 
   Finding the optimal matches... 
+  Optimal matches found 
+> 
+> write.csv(TimingDF, file = paste('Timings-',scales[1],'-',tail(scales, 1), '.csv', sep = ""))
+> 
+> 
+> proc.time()
+   user  system elapsed 
+ 93.105  86.299 205.693 
