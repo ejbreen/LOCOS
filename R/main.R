@@ -1,7 +1,7 @@
 
 # source('R/setup_home.R')
-source('R/setup_chromebook.R')
-#source('R/setup_flux.R')
+# source('R/setup_chromebook.R')
+source('R/setup_flux.R')
 
 library('simstudy')
 
@@ -19,7 +19,7 @@ T_pop <- subset.data.frame(T_pop, select = -c(B, POLY, HEAD, APP))
 
 source('R/ScalingTest1.R')
 
-scales <-  c(.2, .6)
+scales <-  c(.1, .75)
 scales_small <- c(.01, .05, .1, .15)
 
 TimingDF <- data.frame(scale_factor = 0,
@@ -28,7 +28,7 @@ TimingDF <- data.frame(scale_factor = 0,
                       system = 0.0,
                       total = 0.0)
 
-for(i in scales_small){
+for(i in scales){
   print(paste('Running at scaling factor- ', i, sep = ""))
   out <-  runScalingTest(T_pop, C_pop, i)
   TimingDF <- rbind(TimingDF, c(i, 1, unname(out$Timings$setup[1:3])))
