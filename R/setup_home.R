@@ -7,5 +7,7 @@ library(slam)
 library(gurobi)
 library(pryr)
 
+library(optmatch)
+
 # library(Rglpk)
 # library(designmatch)
