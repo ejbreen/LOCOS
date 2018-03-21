@@ -1,7 +1,7 @@
 
-# source('R/setup_home.R')
+source('R/setup_home.R')
 # source('R/setup_chromebook.R')
-source('R/setup_flux.R')
+# source('R/setup_flux.R')
 
 library('simstudy')
 
@@ -22,19 +22,25 @@ source('R/ScalingTest1.R')
 scales <-  c(.01, .65)
 scales_small <- c(.01, .05, .1, .15)
 
-TimingDF <- data.frame(scale_factor = 0,
-                      section = 0,
-                      user = 0.0,
-                      system = 0.0,
-                      total = 0.0)
+DF <- data.frame(scale_factor = 0,
+                 section = 'text',
+                 user = 0.0,
+                 system = 0.0,
+                 total = 0.0,
+                 mem = 0.0)
 
-for(i in scales){
+for(i in scales_small){
   print(paste('Running at scaling factor- ', i, sep = ""))
   out <-  runScalingTest(T_pop, C_pop, i)
-  TimingDF <- rbind(TimingDF, c(i, 1, unname(out$Timings$setup[1:3])))
-  TimingDF <- rbind(TimingDF, c(i, 2, unname(out$Timings$run[1:3])))
-  TimingDF <- rbind(TimingDF, c(i, 3, unname(out$Timings$all[1:3])))
+  DF <- rbind(DF, c(i, 'T_setup', unname(out$Timings$setup[1:3]), 0))
+  DF <- rbind(DF, c(i, 'T_run', unname(out$Timings$run[1:3]), 0))
+  DF <- rbind(DF, c(i, 'T_all', unname(out$Timings$all[1:3]), 0))
+  DF <- rbind(DF, c(i, 'M_start', 0, 0, 0, out$Mem$start))
+  DF <- rbind(DF, c(i, 'M_combined', 0, 0, 0, out$Mem$combined))
+  DF <- rbind(DF, c(i, 'M_distmat', 0, 0, 0, out$Mem$distmat))
+  DF <- rbind(DF, c(i, 'M_setup', 0, 0, 0, out$Mem$setup))
+  DF <- rbind(DF, c(i, 'M_final', 0, 0, 0, out$Mem$final))
 }
 
-write.csv(TimingDF, file = paste('Timings-',scales[1],'-',tail(scales, 1), '.csv', sep = ""))
+write.csv(DF, file = paste('Scaling-',scales[1],'-',tail(scales, 1), '.csv', sep = ""))
 

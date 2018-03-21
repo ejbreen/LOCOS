@@ -12,21 +12,23 @@ combine_pops <- function(T_pop, C_pop, pct){
 
 runScalingTest <- function(T_pop, C_pop, scaling_factor){
   
-  Tot_pop = combine_pops(T_pop, C_pop, scaling_factor)
+  M_start = mem_used()
   
+  p = combine_pops(T_pop, C_pop, scaling_factor)
+  
+  M_combined = mem_used()
   T_all = proc.time()
   T_build = T_all
   
-  attach(Tot_pop)
+  t_ind = p$IMPLANT
   
-  t_ind = IMPLANT
-  
-  x_mat = cbind(B_MOP, B_COP, B_COC, B_DM, POLY_UHWMPE, POLY_XPLE, POLY_A_XPLE,
-                 HEAD_22mm, HEAD_28mm, HEAD_32mm, HEAD_36mm, HEAD_40mm, HEAD_44mm,
-                 APP_anterior, APP_anterolateral, APP_posterior, APP_transtrochanteric,
-                 S_VOLLUME, AGE, FEMALE, BMI)
+  x_mat = cbind(p$B_MOP, p$B_COP, p$B_COC, p$B_DM, p$POLY_UHWMPE, p$POLY_XPLE, p$POLY_A_XPLE,
+                p$HEAD_22mm, p$HEAD_28mm, p$HEAD_32mm, p$HEAD_36mm, p$HEAD_40mm, p$HEAD_44mm,
+                p$APP_anterior, p$APP_anterolateral, p$APP_posterior, p$APP_transtrochanteric,
+                p$S_VOLLUME, p$AGE, p$FEMALE, p$BMI)
   dist_mat = distmat(t_ind, x_mat)
   
+  M_distmat = mem_used()
   
   subset_weight = median(dist_mat)
   
@@ -42,7 +44,7 @@ runScalingTest <- function(T_pop, C_pop, scaling_factor){
   ks = list(covs = ks_covs, n_grid = ks_n_grid, tols = ks_tols)
   
   # exact within group matching
-  exact_covs = cbind(B_MOP, B_COP, POLY_XPLE)
+  exact_covs = cbind(p$B_MOP, p$B_COP, p$POLY_XPLE)
   exact = list(covs = exact_covs)
   
   # exact with an allowed difference
@@ -65,14 +67,20 @@ runScalingTest <- function(T_pop, C_pop, scaling_factor){
   solver = list(name = solver, t_max = t_max, approximate = approximate,
                 round_cplex = 0, trace_cplex = 0)
   
+  M_setup = mem_used()
   T_build = proc.time()-T_build
   T_run = proc.time()
   
   out = bmatch(t_ind = t_ind, dist_mat = dist_mat, exact = exact, n_controls = 5, 
                total_groups = sum(t_ind), solver = solver)
   
+  M_final = mem_used()
   T_run = proc.time()-T_run
   T_all = proc.time()-T_all
   Timings = list(all=T_all, setup=T_build, run=T_run)
-  return(list(Timings = Timings, bmatch_out = out))
+  Mem = list(start = M_start, combined = M_combined, distmat = M_distmat, 
+             setup = M_setup, final = M_final)
+  Timings
+  Mem
+  return(list(Timings = Timings, Mem = Mem, bmatch_out = out))
 }
