@@ -48,7 +48,7 @@ fi
 
 ##  Put your job commands after this line
 
-R CMD BATCH --no-restore --no-save R/main.R timetest.out
+R CMD BATCH --no-restore --no-save R/main.R timetest_1core.out
 
 
 
