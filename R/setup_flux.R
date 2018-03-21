@@ -1,5 +1,7 @@
 install.packages('simstudy', repos = 'https://cloud.r-project.org/')
 library(simstudy)
+install.packages('pryr', repos = 'https://cloud.r-project.org/')
+library(pryr)
 
 install.packages('slam', repos = 'https://cloud.r-project.org/') # required for gurobi
 library(slam)

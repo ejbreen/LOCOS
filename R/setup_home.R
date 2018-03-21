@@ -5,6 +5,7 @@ library(MASS)
 library(lattice)
 library(slam)
 library(gurobi)
+library(pryr)
 
 # library(Rglpk)
 # library(designmatch)
