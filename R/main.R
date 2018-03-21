@@ -19,7 +19,7 @@ T_pop <- subset.data.frame(T_pop, select = -c(B, POLY, HEAD, APP))
 
 source('R/ScalingTest1.R')
 
-scales <-  c(.1, .15, .2, .25, .3)
+scales <-  c(.1, .15, .2, .25, .3, .35, .4, .45, .5)
 scales_small <- c(.01, .05, .1, .15)
 
 DF <- data.frame(scale_factor = 0,
