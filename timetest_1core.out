@@ -46,7 +46,7 @@ installing to /home/ejbreen/R/x86_64-pc-linux-gnu-library/3.4/simstudy/libs
 * DONE (simstudy)
 
 The downloaded source packages are in
-	‘/tmp/Rtmp4YgSoB/downloaded_packages’
+	‘/tmp/RtmpdgHCNt/downloaded_packages’
 Loading required package: data.table
 Installing package into ‘/home/ejbreen/R/x86_64-pc-linux-gnu-library/3.4’
 (as ‘lib’ is unspecified)
@@ -77,7 +77,7 @@ installing to /home/ejbreen/R/x86_64-pc-linux-gnu-library/3.4/pryr/libs
 * DONE (pryr)
 
 The downloaded source packages are in
-	‘/tmp/Rtmp4YgSoB/downloaded_packages’
+	‘/tmp/RtmpdgHCNt/downloaded_packages’
 
 Attaching package: ‘pryr’
 
@@ -96,7 +96,7 @@ ERROR: failed to lock directory ‘/home/ejbreen/R/x86_64-pc-linux-gnu-library/3
 Try removing ‘/home/ejbreen/R/x86_64-pc-linux-gnu-library/3.4/00LOCK-slam’
 
 The downloaded source packages are in
-	‘/tmp/Rtmp4YgSoB/downloaded_packages’
+	‘/tmp/RtmpdgHCNt/downloaded_packages’
 Installing package into ‘/home/ejbreen/R/x86_64-pc-linux-gnu-library/3.4’
 (as ‘lib’ is unspecified)
 trying URL 'https://cloud.r-project.org/src/contrib/MASS_7.3-49.tar.gz'
@@ -123,7 +123,7 @@ installing to /home/ejbreen/R/x86_64-pc-linux-gnu-library/3.4/MASS/libs
 * DONE (MASS)
 
 The downloaded source packages are in
-	‘/tmp/Rtmp4YgSoB/downloaded_packages’
+	‘/tmp/RtmpdgHCNt/downloaded_packages’
 Installing package into ‘/home/ejbreen/R/x86_64-pc-linux-gnu-library/3.4’
 (as ‘lib’ is unspecified)
 trying URL 'https://cloud.r-project.org/src/contrib/lattice_0.20-35.tar.gz'
@@ -151,7 +151,7 @@ installing to /home/ejbreen/R/x86_64-pc-linux-gnu-library/3.4/lattice/libs
 * DONE (lattice)
 
 The downloaded source packages are in
-	‘/tmp/Rtmp4YgSoB/downloaded_packages’
+	‘/tmp/RtmpdgHCNt/downloaded_packages’
 Installing package into ‘/home/ejbreen/R/x86_64-pc-linux-gnu-library/3.4’
 (as ‘lib’ is unspecified)
 * installing *binary* package ‘gurobi’ ...
@@ -177,7 +177,7 @@ In install.packages("slam", repos = "https://cloud.r-project.org/") :
 > 
 > source('R/ScalingTest1.R')
 > 
-> scales <-  c(.1, .15, .2, .25, .3, .35, .4, .45, .5)
+> scales <-  c(.05, .1, .15, .2, .25, .3, .35, .4, .45, .5, .55)
 > scales_small <- c(.01, .05, .1, .15)
 > 
 > DF <- data.frame(scale_factor = 0,
@@ -200,6 +200,11 @@ In install.packages("slam", repos = "https://cloud.r-project.org/") :
 +   DF <- rbind(DF, c(i, 'M_setup', 0, 0, 0, out$Mem$setup))
 +   DF <- rbind(DF, c(i, 'M_final', 0, 0, 0, out$Mem$final))
 + }
+[1] "Running at scaling factor- 0.05"
+  Building the matching problem... 
+  Gurobi optimizer is open... 
+  Finding the optimal matches... 
+  Optimal matches found 
 [1] "Running at scaling factor- 0.1"
   Building the matching problem... 
   Gurobi optimizer is open... 
@@ -245,10 +250,7 @@ In install.packages("slam", repos = "https://cloud.r-project.org/") :
   Gurobi optimizer is open... 
   Finding the optimal matches... 
   Optimal matches found 
-> 
-> write.csv(DF, file = paste('Scaling-',scales[1],'-',tail(scales, 1), '.csv', sep = ""))
-> 
-> 
-> proc.time()
-    user   system  elapsed 
-2745.348 3706.081 6531.908 
+[1] "Running at scaling factor- 0.55"
+  Building the matching problem... 
+  Gurobi optimizer is open... 
+  Finding the optimal matches... 
