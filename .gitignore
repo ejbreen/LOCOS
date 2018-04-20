@@ -5,3 +5,4 @@
 *.pyc
 gurobi.log
 *_pop *
+.csv

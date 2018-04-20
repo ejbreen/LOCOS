@@ -23,23 +23,26 @@ source('R/setup_home.R')
 # 
 # Tot_pop <- combine_pops(T_pop, C_pop, .01)
 
-Tot_pop <- read.csv('sample_set_10000.csv')
+Tot_pop <- read.csv('R/sample_set_47599.csv')
+Tot_pop <-  head(Tot_pop, 40000)
 
-match_exact <- exactMatch(IMPLANT ~ POLY_XPLE, data = Tot_pop)
+match_exact <- exactMatch(implant ~ CoC + CoP + MoP, data = Tot_pop)
 
-match_dist <- match_on(IMPLANT ~ AGE + BMI + strata(POLY_XPLE),
-                       within = match_exact, data = Tot_pop)
-match_dist2 <-  match_on(glm(IMPLANT ~ AGE + BMI, data = Tot_pop,family = binomial),
-                         data = Tot_pop, 
-                         within = exactMatch(IMPLANT ~ B + POLY + HEAD + APP, 
-                                             data = Tot_pop)
-                         )
+match_dist <-  match_on(glm(implant ~ age + sex, data = Tot_pop, family = binomial),
+                        data = Tot_pop, 
+                        within = exactMatch(implant ~ CoP, 
+                                            data = Tot_pop)
+                        )
 
-fm1 <- fullmatch(match_dist, min.controls = 2, max.controls = 2)
+fm1 <- fullmatch(implant ~ age + sex, data = Tot_pop, min.controls = 5, max.controls = 5)
 
 matched_pop <- cbind(Tot_pop, group = fm1, matched = matched(fm1))
+matched_pop$group <-  factor(matched_pop$group, levels = c(levels(matched_pop$group), 0))
+matched_pop$group[is.na(matched_pop$group)] <- 0
 
-matched_pop[matched_pop$group==1.20]
+matched_pop[matched_pop$implant == 1,]
+matched_pop[matched_pop$group == 1.1,]
+matched_pop[matched_pop$matched == TRUE,]
 
 
 

@@ -1,47 +1,48 @@
 
-# source('R/setup_home.R')
+source('R/setup_home.R')
 # source('R/setup_chromebook.R')
-source('R/setup_flux.R')
+# source('R/setup_flux.R')
 
-library('simstudy')
+source('R/match_analysis.R')
 
-source("R/TKA population simulation parameters.R")
-out <- pop_sim_paramaters()
-C_pop_def <- out$C_pop_def
-T_pop_def <- out$T_pop_def
-Levels <- out$Levels
-
-C_pop <- genData(60000, C_pop_def)
-T_pop <- genData(2000, T_pop_def)
-
-C_pop <- subset.data.frame(C_pop, select = -c(B, POLY, HEAD, APP))
-T_pop <- subset.data.frame(T_pop, select = -c(B, POLY, HEAD, APP))
-
-source('R/ScalingTest1.R')
-
-scales <-  c(.05, .1, .15, .2, .25, .3, .35, .55)
-scales_small <- c(.01, .05, .1, .15)
-
-DF <- data.frame(scale_factor = 0,
-                 section = 'text',
-                 user = 0.0,
-                 system = 0.0,
-                 total = 0.0,
-                 mem = 0.0,
+DF <- data.frame(population = character(),
+                 basic = double(),
+                 DAG = double(),
+                 greedy = double(),
+                 optimal_prop = double(),
+                 optimal_cov = double(),
                  stringsAsFactors = FALSE)
 
-for(i in scales){
-  print(paste('Running at scaling factor- ', i, sep = ""))
-  out <-  runScalingTest(T_pop, C_pop, i)
-  DF <- rbind(DF, c(i, 'T_setup', unname(out$Timings$setup[1:3]), 0))
-  DF <- rbind(DF, c(i, 'T_run', unname(out$Timings$run[1:3]), 0))
-  DF <- rbind(DF, c(i, 'T_all', unname(out$Timings$all[1:3]), 0))
-  DF <- rbind(DF, c(i, 'M_start', 0, 0, 0, out$Mem$start))
-  DF <- rbind(DF, c(i, 'M_combined', 0, 0, 0, out$Mem$combined))
-  DF <- rbind(DF, c(i, 'M_distmat', 0, 0, 0, out$Mem$distmat))
-  DF <- rbind(DF, c(i, 'M_setup', 0, 0, 0, out$Mem$setup))
-  DF <- rbind(DF, c(i, 'M_final', 0, 0, 0, out$Mem$final))
+set_pop <- function(complexity, effect, iteration){
+  x = paste("complexity-",complexity,"_",
+            "effect-",effect,"_",
+            "iteration-",iteration,
+            sep = "")
+  return(x)
 }
 
-write.csv(DF, file = paste('Scaling-',scales[1],'-',tail(scales, 1), '.csv', sep = ""))
+complexities  <- c(1)
+effect_levels <- c(1)
+iterations     <- c(0:10)
+
+for (comp in complexities){
+  for (effect in effect_levels){
+    for (iter in iterations){
+      pop_name <- set_pop(comp,effect,iter)
+      pop <- read.csv(paste("Data/",pop_name,".csv",sep = ""))
+      
+      pop <- head(pop, 5000)
+      
+      p1 <- Basic_Cox(pop)
+      p2 <- DAG_Cox(pop)
+      p3 <- Greedy_Propensity_Cox(pop)
+      p4 <- Optimal_Propensity_Cox(pop)
+      p5 <- Optimal_Covariate_Cox(pop)
+      
+      DF <- rbind(DF, c(pop_name, p1, p2, p3, p4, p5))
+    }
+  }
+}
+
+write.csv(DF, file = paste("match_comparison",'.csv', sep = ""))
 
